@@ -1,0 +1,12 @@
+name: node-checker-api
+description: node-checker-api
+apiVersion: v1
+version: 1.0.0
+keywords:
+  - healtcheck
+home: https://github.com/lumoslabs/node-checker-api
+sources:
+  - https://github.com/lumoslabs/node-checker-api
+maintainers:
+  - name: Lumos Labs
+    email: ops@lumoslabs.com
