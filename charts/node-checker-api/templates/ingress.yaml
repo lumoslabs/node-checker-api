@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Chart.Name | trunc 63 }}
+spec:
+  rules:
+    - host: {{ .Values.hostName | quote }}
+      http:
+        paths:
+          - backend:
+              serviceName: {{ template "name" . }}
+              servicePort: {{ int .Values.servicePort }}

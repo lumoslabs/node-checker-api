@@ -1,0 +1,37 @@
+# Deployment manifiest for node-checker-api-web
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "name" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    # The "heritage" label is used to track which tool deployed a given chart.
+    heritage: {{ .Release.Service | quote }}
+    # The "release" label makes it easy to search for all components of a release using kubectl.
+    release: {{ .Release.Name | quote }}
+    # The "chart" label makes it easy to audit chart usage
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  minReadySeconds: 5
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        # The "app" label is the app name, reflecting the entire app
+        app: {{ template "name" . }}
+        # The "component" label specifies a role that is a single part of the entire app
+        component: web
+        release: {{ .Release.Name | quote }}
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: {{ template "name" . }}
+          image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.configName }}
+                optional: false
