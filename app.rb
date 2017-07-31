@@ -5,6 +5,8 @@ require 'kubeclient'
 set port: ENV.fetch('SERVICE_PORT', 80)
 
 get '/pod_status_by_node' do
+  content_type :json
+
   ssl_options = { verify_ssl: OpenSSL::SSL::VERIFY_NONE }
   auth_options = {
     bearer_token: File.read('/var/run/secrets/kubernetes.io/serviceaccount/token')
